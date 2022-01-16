@@ -17,7 +17,11 @@ router.get("/register", (req, res) => {
 router.post("/register", async (req, res) => {
 	let { username, password, repeatPassword } = req.body;
     if (password !== repeatPassword) {
-        throw new Error('Passwords need to match!')
+        return res.send('Passwords need to match')
+    }
+    let userExists = await authService.ifUserExists(username)
+    if (userExists) {
+        return res.send('User already exists')
     }
     try {
         await authService.register(username, password);
