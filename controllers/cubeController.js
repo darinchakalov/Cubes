@@ -30,8 +30,34 @@ const renderDetailsPage = (req, res) => {
 		});
 };
 
+const renderEditPage = (req, res) => {
+	let id = req.params.id;
+	cubeService
+		.getSingle(id)
+		.then((cube) => {
+			res.render("cube/edit", cube);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		});
+};
+
+const renderDeletePage = (req, res) => {
+	let id = req.params.id;
+	cubeService
+		.getSingle(id)
+		.then((cube) => {
+			res.render("cube/delete", cube);
+		})
+		.catch((err) => {
+			res.status(400).send(err);
+		});
+};
+
 router.get("/create", renderPage);
 router.post("/create", createCube);
 router.get("/details/:id", renderDetailsPage);
+router.get("/edit/:id", renderEditPage);
+router.get("/delete/:id", renderDeletePage);
 
 module.exports = router;
