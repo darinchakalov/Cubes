@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const cubeService = require("../services/cubeService.js");
-const cubes = require("../config/database.json");
 
 const renderPage = (req, res) => {
 	res.render("cube/create");
