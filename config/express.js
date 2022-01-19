@@ -1,6 +1,7 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const cookieParser = require("cookie-parser");
+const { auth } = require('../middlewares/authMiddleware.js')
 
 module.exports = (app) => {
 	//Setup the view engine
@@ -20,4 +21,7 @@ module.exports = (app) => {
 
 	// Setup Cookie-Parser
 	app.use(cookieParser());
+
+	//Setup auth middleware
+	app.use(auth);
 };

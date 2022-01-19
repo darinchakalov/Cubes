@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cubeService = require("../services/cubeService.js");
 
+
 const renderPage = (req, res) => {
 	res.render("cube/create");
 };
@@ -43,6 +44,10 @@ const renderEditPage = (req, res) => {
 };
 
 const renderDeletePage = (req, res) => {
+	if (!req.user) {
+		return res.status(401).redirect('/404')
+	}
+	
 	let id = req.params.id;
 	cubeService
 		.getSingle(id)
