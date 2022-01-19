@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const cubeService = require("../services/cubeService.js");
-
-
+const { isAuthenticated } = require('../middlewares/authMiddleware.js')
+ 
 const renderPage = (req, res) => {
 	res.render("cube/create");
 };
@@ -44,9 +44,6 @@ const renderEditPage = (req, res) => {
 };
 
 const renderDeletePage = (req, res) => {
-	if (!req.user) {
-		return res.status(401).redirect('/404')
-	}
 	
 	let id = req.params.id;
 	cubeService
@@ -63,6 +60,6 @@ router.get("/create", renderPage);
 router.post("/create", createCube);
 router.get("/details/:id", renderDetailsPage);
 router.get("/edit/:id", renderEditPage);
-router.get("/delete/:id", renderDeletePage);
+router.get("/delete/:id", isAuthenticated, renderDeletePage);
 
 module.exports = router;
