@@ -43,6 +43,17 @@ const renderEditPage = (req, res) => {
 		});
 };
 
+const editingCube = async (req, res) => {
+	let { name, description, imageUrl, difficulty } = req.body;
+
+	try {
+		await cubeService.editOne(req.params.id, {name, description, imageUrl, difficulty})
+		res.redirect(`/cube/details/${req.params.id}`)
+	} catch (error) {
+		res.send(error)
+	}
+}
+
 const renderDeletePage = (req, res) => {
 	let id = req.params.id;
 	cubeService
@@ -57,7 +68,7 @@ const renderDeletePage = (req, res) => {
 
 const deletingCube = async (req, res) => {
 	try {
-		await cubeService.deleteCube(req.params.id);
+		await cubeService.deleteOne(req.params.id);
 		res.redirect('/')
 	} catch (error) {
 		res.send(error)
@@ -69,6 +80,7 @@ router.get("/create", isAuthenticated, renderPage);
 router.post("/create", isAuthenticated, createCube);
 router.get("/details/:id", renderDetailsPage);
 router.get("/edit/:id", isAuthenticated, renderEditPage);
+router.post('/edit/:id', editingCube)
 router.get("/delete/:id", isAuthenticated, renderDeletePage);
 router.post('/delete/:id', deletingCube)
 

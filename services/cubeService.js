@@ -10,7 +10,7 @@ const getAll = () => {
 };
 
 const getSingle = (id) => {
-	return Cube.findById(id).populate('accessories').lean();
+	return Cube.findById(id).populate("accessories").lean();
 };
 
 const search = async (text, from, to) => {
@@ -30,16 +30,21 @@ const search = async (text, from, to) => {
 	return result;
 };
 
-const deleteCube = (id) => {
-	return Cube.deleteOne({ _id: id})
-}
+const deleteOne = (id) => {
+	return Cube.deleteOne({ _id: id });
+};
+
+const editOne = (id, cube) => {
+	return Cube.findByIdAndUpdate(id, cube, { runValidators: true})
+};
 
 let cubeService = {
 	create,
 	getAll,
 	search,
 	getSingle,
-	deleteCube
+	deleteOne,
+	editOne,
 };
 
 module.exports = cubeService;
