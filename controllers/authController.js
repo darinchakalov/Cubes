@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const authService = require("../services/authService.js");
 const { TOKEN_COOKIE_NAME } = require('../constants.js')
+const { isGuest } = require('../middlewares/authMiddleware.js')
 
-router.get("/login", (req, res) => {
+router.get("/login", isGuest,  (req, res) => {
 	res.render("auth/login");
 });
 
@@ -22,7 +23,7 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", isGuest, (req, res) => {
 	res.render("auth/register");
 });
 
@@ -42,5 +43,13 @@ router.post("/register", async (req, res) => {
 		res.send(error.message);
 	}
 });
+
+router.get('/logout', (req, res) => {
+	if (req.user) {
+		delete req.user
+		res.clearCookie('app_token')
+	}
+	res.redirect('/')
+})
 
 module.exports = router;
