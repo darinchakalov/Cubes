@@ -44,7 +44,6 @@ const renderEditPage = (req, res) => {
 };
 
 const renderDeletePage = (req, res) => {
-	
 	let id = req.params.id;
 	cubeService
 		.getSingle(id)
@@ -56,10 +55,21 @@ const renderDeletePage = (req, res) => {
 		});
 };
 
-router.get("/create", renderPage);
-router.post("/create", createCube);
+const deletingCube = async (req, res) => {
+	try {
+		await cubeService.deleteCube(req.params.id);
+		res.redirect('/')
+	} catch (error) {
+		res.send(error)
+	}
+
+}
+
+router.get("/create", isAuthenticated, renderPage);
+router.post("/create", isAuthenticated, createCube);
 router.get("/details/:id", renderDetailsPage);
-router.get("/edit/:id", renderEditPage);
+router.get("/edit/:id", isAuthenticated, renderEditPage);
 router.get("/delete/:id", isAuthenticated, renderDeletePage);
+router.post('/delete/:id', deletingCube)
 
 module.exports = router;

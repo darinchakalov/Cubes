@@ -30,11 +30,16 @@ const search = async (text, from, to) => {
 	return result;
 };
 
+const deleteCube = (id) => {
+	return Cube.deleteOne({ _id: id})
+}
+
 let cubeService = {
 	create,
 	getAll,
 	search,
 	getSingle,
+	deleteCube
 };
 
 module.exports = cubeService;
