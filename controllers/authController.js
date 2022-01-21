@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const authService = require("../services/authService.js");
-const { TOKEN_COOKIE_NAME } = require('../constants.js')
-const { isGuest } = require('../middlewares/authMiddleware.js')
+const { TOKEN_COOKIE_NAME } = require("../constants.js");
+const { isGuest } = require("../middlewares/authMiddleware.js");
 
-router.get("/login", isGuest,  (req, res) => {
+router.get("/login", isGuest, (req, res) => {
 	res.render("auth/login");
 });
 
@@ -14,8 +14,8 @@ router.post("/login", async (req, res) => {
 		let token = await authService.createToken(user);
 
 		res.cookie(TOKEN_COOKIE_NAME, token, {
-            httpOnly: true,
-        });
+			httpOnly: true,
+		});
 
 		res.redirect("/");
 	} catch (error) {
@@ -30,11 +30,11 @@ router.get("/register", isGuest, (req, res) => {
 router.post("/register", async (req, res) => {
 	let { username, password, repeatPassword } = req.body;
 	if (password !== repeatPassword) {
-		return res.send("Passwords need to match");
+		return res.render("auth/register", { error: "Passwords need to match", name: username });
 	}
 	let userExists = await authService.ifUserExists(username);
 	if (userExists) {
-		return res.send("User already exists");
+		return res.render("auth/register", { error: "User already exists", name: username });
 	}
 	try {
 		await authService.register(username, password);
@@ -44,12 +44,12 @@ router.post("/register", async (req, res) => {
 	}
 });
 
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
 	if (req.user) {
-		delete req.user
-		res.clearCookie('app_token')
+		delete req.user;
+		res.clearCookie("app_token");
 	}
-	res.redirect('/')
-})
+	res.redirect("/");
+});
 
 module.exports = router;

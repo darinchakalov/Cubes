@@ -9,12 +9,13 @@ const cubeSchema = new mongoose.Schema({
 	description: {
 		type: String,
 		required: true,
+		minlength: 20,
 		maxlength: 100,
 	},
 	imageUrl: {
 		type: String,
 		required: true,
-		validate: [/^https?/, 'Invalid image Url'],
+		validate: [/^https?/, "Invalid image Url"],
 	},
 	difficulty: {
 		type: Number,
@@ -25,6 +26,6 @@ const cubeSchema = new mongoose.Schema({
 	accessories: [{ type: mongoose.Types.ObjectId, ref: "Accessory" }],
 });
 
-const Cube = mongoose.model('Cube', cubeSchema)
+const Cube = mongoose.model("Cube", cubeSchema);
 
 module.exports = Cube;
