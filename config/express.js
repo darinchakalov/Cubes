@@ -1,7 +1,8 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const cookieParser = require("cookie-parser");
-const { auth } = require('../middlewares/authMiddleware.js')
+const { auth } = require("../middlewares/authMiddleware.js");
+const errorHandler = require("../middlewares/errorHandlerMIddleware.js");
 
 module.exports = (app) => {
 	//Setup the view engine
@@ -24,4 +25,7 @@ module.exports = (app) => {
 
 	//Setup auth middleware
 	app.use(auth);
+
+	//Set global error handler
+	app.use(errorHandler);
 };

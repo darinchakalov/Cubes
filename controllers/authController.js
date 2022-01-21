@@ -27,7 +27,7 @@ router.get("/register", isGuest, (req, res) => {
 	res.render("auth/register");
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
 	let { username, password, repeatPassword } = req.body;
 	if (password !== repeatPassword) {
 		return res.render("auth/register", { error: "Passwords need to match", name: username });
@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
 		await authService.register(username, password);
 		res.redirect("/");
 	} catch (error) {
-		res.send(error.message);
+		return res.render("auth/register", { error: error.message });
 	}
 });
 
