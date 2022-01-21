@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
 
 		res.redirect("/");
 	} catch (error) {
-		res.send(error.message);
+		res.render("/login", { error: error.message });
 	}
 });
 
@@ -30,7 +30,7 @@ router.get("/register", isGuest, (req, res) => {
 router.post("/register", async (req, res, next) => {
 	let { username, password, repeatPassword } = req.body;
 	if (password !== repeatPassword) {
-		return res.render("auth/register", { error: "Passwords need to match", name: username });
+		return res.status(400).render("auth/register", { error: "Passwords need to match", name: username });
 	}
 	let userExists = await authService.ifUserExists(username);
 	if (userExists) {
@@ -47,8 +47,8 @@ router.post("/register", async (req, res, next) => {
 router.get("/logout", (req, res) => {
 	if (req.user) {
 		delete req.user;
-		res.clearCookie("app_token");
 	}
+	res.clearCookie(TOKEN_COOKIE_NAME);
 	res.redirect("/");
 });
 

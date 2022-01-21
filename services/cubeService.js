@@ -1,7 +1,7 @@
 const Cube = require("../models/Cube.js");
 
-const create = (name, description, imageUrl, difficulty) => {
-	let cube = new Cube({ name, description, imageUrl, difficulty });
+const create = (name, description, imageUrl, difficulty, userId) => {
+	let cube = new Cube({ name, description, imageUrl, difficulty, creator: userId });
 	return cube.save();
 };
 
@@ -17,7 +17,6 @@ const search = async (text, from, to) => {
 	let result = await Cube.find({});
 	if (text) {
 		result = result.filter((c) => c.name.toLowerCase().includes(text.toLowerCase()));
-		console.log(result);
 	}
 
 	if (from) {
@@ -35,7 +34,7 @@ const deleteOne = (id) => {
 };
 
 const editOne = (id, cube) => {
-	return Cube.findByIdAndUpdate(id, cube, { runValidators: true})
+	return Cube.findByIdAndUpdate(id, cube, { runValidators: true });
 };
 
 let cubeService = {

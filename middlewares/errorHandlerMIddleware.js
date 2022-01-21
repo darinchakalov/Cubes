@@ -1,9 +1,6 @@
-function errorHandler(errorMessage, req, res, next) {
+exports.errorHandler = function (errorMessage, req, res, next) {
 	if (errorMessage) {
-		console.log("tuk");
-	} else {
-		console.log("ne tuk");
+		res.locals.err = errorMessage;
+		res.status(404).render("403");
 	}
-}
-
-module.exports = errorHandler;
+};
